@@ -1,4 +1,4 @@
 export default {
-  endpoint: "http://localhost:8000/api/checkout",
+  endpoint: process.env.NEXT_PUBLIC_API_URL,
   stripe_key: process.env.NEXT_PUBLIC_STRIPE_KEY,
 };

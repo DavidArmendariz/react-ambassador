@@ -7,7 +7,7 @@ import axios from "axios";
 import { configureStore } from "./redux/configureStore";
 import { Provider } from "react-redux";
 
-axios.defaults.baseURL = `${process.env.API_URL}/api/ambassador`;
+axios.defaults.baseURL = `${process.env.REACT_APP_API_URL}/api/ambassador`;
 axios.defaults.withCredentials = true;
 
 const store = configureStore();

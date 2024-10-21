@@ -2,20 +2,31 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { User } from "../models/user";
+import axios from "axios";
 
 const Header = (props: { user: User }) => {
   const [title, setTitle] = useState("Welcome");
+  const [revenue, setRevenue] = useState<number | null>(null);
   const [description, setDescription] = useState("Share links to earn money");
 
   useEffect(() => {
-    if (props.user?.id) {
-      setTitle(`$${props.user.revenue}`);
+    (async () => {
+      if (props.user?.id) {
+        const { data } = await axios.get<{ revenue: number }>("revenue");
+        setRevenue(data.revenue);
+      }
+    })();
+  }, [props.user?.id]);
+
+  useEffect(() => {
+    if (revenue !== null) {
+      setTitle(`$${revenue}`);
       setDescription("You have earned this far");
     } else {
       setTitle("Welcome");
       setDescription("Share links to earn money");
     }
-  }, [props.user]);
+  }, [revenue]);
 
   let buttons;
 

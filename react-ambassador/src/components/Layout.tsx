@@ -20,7 +20,8 @@ const Layout = (props: any) => {
         console.log(e);
       }
     })();
-  }, [props]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   let header;
 
@@ -31,10 +32,8 @@ const Layout = (props: any) => {
   return (
     <div>
       <Nav />
-
       <main>
         {header}
-
         <div className="album py-5 bg-light">
           <div className="container">{props.children}</div>
         </div>

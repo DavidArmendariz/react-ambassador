@@ -1,7 +1,7 @@
 import React, {Component, SyntheticEvent} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
-import firebase from 'firebase/app';
+import app from '../firebase';
 import 'firebase/auth';
 
 class Register extends Component {
@@ -32,9 +32,10 @@ class Register extends Component {
 
     registerExternal = async () => {
         const provider = new firebase.auth.GoogleAuthProvider();
+        const auth = getAuth(app);
 
         try {
-            const result = await firebase.auth().signInWithPopup(provider);
+            const result = await signInWithPopup(auth, provider);
             const user = result.user;
 
             if (user) {
@@ -102,7 +103,7 @@ class Register extends Component {
                     <button 
                         type="button" 
                         className="w-100 btn btn-lg btn-secondary mt-2" 
-                        onClick={this.registerWithGoogle}
+                        onClick={this.registerExternal}
                     >
                         Register with Google
                     </button>

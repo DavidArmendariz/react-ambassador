@@ -1,6 +1,8 @@
 import React, {Component, SyntheticEvent} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 class Register extends Component {
     firstName = '';
@@ -26,6 +28,28 @@ class Register extends Component {
         this.setState({
             redirect: true
         });
+    }
+
+    registerExternal = async () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        try {
+            const result = await firebase.auth().signInWithPopup(provider);
+            const user = result.user;
+
+            if (user) {
+                await axios.post('/register/extern', {
+                    first_name: user.displayName?.split(' ')[0],
+                    last_name: user.displayName?.split(' ')[1],
+                    email: user.email,
+                    idToken: user.uid,
+                });
+
+                this.setState({ redirect: true });
+            }
+        } catch (error) {
+            this.setState({ error: 'Extern authentication failed. Please try again.' });
+        }
     }
 
     render() {
@@ -74,6 +98,14 @@ class Register extends Component {
                     </div>
 
                     <button className="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+                    <hr>
+                    <button 
+                        type="button" 
+                        className="w-100 btn btn-lg btn-secondary mt-2" 
+                        onClick={this.registerWithGoogle}
+                    >
+                        Register with Google
+                    </button>
                 </form>
             </main>
         );

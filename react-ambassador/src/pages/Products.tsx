@@ -57,7 +57,7 @@ const Products = (props: {
       setNotify({
         show: true,
         error: false,
-        message: `Link generated: http://localhost:5000/${data.code}`,
+        message: `Link generated: ${process.env.REACT_APP_CHECKOUT_URL}/${data.code}`,
       });
     } catch (e) {
       setNotify({

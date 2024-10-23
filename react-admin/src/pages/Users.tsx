@@ -48,7 +48,7 @@ const Users = () => {
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>
                                     <Button variant="contained" color="primary"
-                                            href={`users/${user.id}/links`}
+                                            href={`users/links/${user.id}`}
                                     >View</Button>
                                 </TableCell>
                             </TableRow>

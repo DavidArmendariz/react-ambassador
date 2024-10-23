@@ -20,7 +20,7 @@ function App() {
                 <Route path={'/register'} component={Register}/>
                 <Route path={'/profile'} component={Profile}/>
                 <Route path={'/users'} exact component={Users}/>
-                <Route path={'/users/:id/links'} component={Links}/>
+                <Route path={'/users/links/:id'} component={Links}/>
                 <Route path={'/products'} exact component={Products}/>
                 <Route path={'/products/create'} component={ProductForm}/>
                 <Route path={'/products/:id/edit'} component={ProductForm}/>

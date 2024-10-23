@@ -2,7 +2,7 @@ import React, {Component, SyntheticEvent} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import app from '../firebase';
-import 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 class Register extends Component {
     firstName = '';
@@ -13,6 +13,7 @@ class Register extends Component {
     state = {
         redirect: false
     };
+
 
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -31,13 +32,13 @@ class Register extends Component {
     }
 
     registerExternal = async () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
+        const provider = new GoogleAuthProvider();
         const auth = getAuth(app);
-
+    
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-
+    
             if (user) {
                 await axios.post('/register/extern', {
                     first_name: user.displayName?.split(' ')[0],
@@ -45,11 +46,11 @@ class Register extends Component {
                     email: user.email,
                     idToken: user.uid,
                 });
-
+    
                 this.setState({ redirect: true });
             }
         } catch (error) {
-            this.setState({ error: 'Extern authentication failed. Please try again.' });
+            this.setState({ error: 'Error en la autenticación externa. Inténtalo de nuevo.' });
         }
     }
 
@@ -99,7 +100,7 @@ class Register extends Component {
                     </div>
 
                     <button className="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
-                    <hr>
+                    
                     <button 
                         type="button" 
                         className="w-100 btn btn-lg btn-secondary mt-2" 

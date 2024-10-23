@@ -1,36 +1,80 @@
+<<<<<<< HEAD
 import React, {Component, SyntheticEvent} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import app from '../firebase';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+=======
+import { Component, SyntheticEvent } from "react";
+import axios from "axios";
+import { Redirect } from "react-router-dom";
+import app from "../../firebase";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+>>>>>>> 10388cc2fa8d7c2c6bac6a259848497db080d96c
 
 class Register extends Component {
-    firstName = '';
-    lastName = '';
-    email = '';
-    password = '';
-    passwordConfirm = '';
-    state = {
-        redirect: false
-    };
+  firstName = "";
+  lastName = "";
+  email = "";
+  password = "";
+  passwordConfirm = "";
+  state = {
+    redirect: false,
+  };
 
+<<<<<<< HEAD
 
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
+=======
+  submit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+>>>>>>> 10388cc2fa8d7c2c6bac6a259848497db080d96c
 
-        await axios.post('register', {
-            first_name: this.firstName,
-            last_name: this.lastName,
-            email: this.email,
-            password: this.password,
-            password_confirm: this.passwordConfirm
+    await axios.post("register", {
+      first_name: this.firstName,
+      last_name: this.lastName,
+      email: this.email,
+      password: this.password,
+      password_confirm: this.passwordConfirm,
+    });
+
+    this.setState({
+      redirect: true,
+    });
+  };
+
+  registerExternal = async () => {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth(app);
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      if (user) {
+        await axios.post("/register/extern", {
+          first_name: user.displayName?.split(" ")[0],
+          last_name: user.displayName?.split(" ")[1],
+          email: user.email,
+          idToken: user.uid,
         });
 
-        this.setState({
-            redirect: true
-        });
+        this.setState({ redirect: true });
+      }
+    } catch (error) {
+      this.setState({
+        error: "Extern authentication failed. Please try again.",
+      });
+    }
+  };
+
+  render() {
+    if (this.state.redirect) {
+      return <Redirect to={"/login"} />;
     }
 
+<<<<<<< HEAD
     registerExternal = async () => {
         const provider = new GoogleAuthProvider();
         const auth = getAuth(app);
@@ -53,12 +97,61 @@ class Register extends Component {
             this.setState({ error: 'Error en la autenticación externa. Inténtalo de nuevo.' });
         }
     }
+=======
+    return (
+      <main className="form-signin">
+        <form onSubmit={this.submit}>
+          <h1 className="h3 mb-3 fw-normal">Please register</h1>
 
-    render() {
-        if (this.state.redirect) {
-            return <Redirect to={'/login'}/>;
-        }
+          <div className="form-floating">
+            <input
+              className="form-control"
+              placeholder="First Name"
+              onChange={(e) => (this.firstName = e.target.value)}
+            />
+            <label>First Name</label>
+          </div>
 
+          <div className="form-floating">
+            <input
+              className="form-control"
+              placeholder="Last Name"
+              onChange={(e) => (this.lastName = e.target.value)}
+            />
+            <label>Last Name</label>
+          </div>
+
+          <div className="form-floating">
+            <input
+              type="email"
+              className="form-control"
+              placeholder="name@example.com"
+              onChange={(e) => (this.email = e.target.value)}
+            />
+            <label>Email address</label>
+          </div>
+          <div className="form-floating">
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Password"
+              onChange={(e) => (this.password = e.target.value)}
+            />
+            <label>Password</label>
+          </div>
+>>>>>>> 10388cc2fa8d7c2c6bac6a259848497db080d96c
+
+          <div className="form-floating">
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Password Confirm"
+              onChange={(e) => (this.passwordConfirm = e.target.value)}
+            />
+            <label>Password Confirm</label>
+          </div>
+
+<<<<<<< HEAD
         return (
             <main className="form-signin">
                 <form onSubmit={this.submit}>
@@ -112,6 +205,23 @@ class Register extends Component {
             </main>
         );
     }
+=======
+          <button className="w-100 btn btn-lg btn-primary" type="submit">
+            Submit
+          </button>
+          <hr />
+          <button
+            type="button"
+            className="w-100 btn btn-lg btn-secondary mt-2"
+            onClick={this.registerExternal}
+          >
+            Regístrate con Google
+          </button>
+        </form>
+      </main>
+    );
+  }
+>>>>>>> 10388cc2fa8d7c2c6bac6a259848497db080d96c
 }
 
 export default Register;

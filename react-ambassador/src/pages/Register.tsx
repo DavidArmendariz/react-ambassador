@@ -65,35 +65,35 @@ class Register extends Component {
                     <h1 className="h3 mb-3 fw-normal">Please register</h1>
 
                     <div className="form-floating">
-                        <input className="form-control" placeholder="First Name"
+                        <input className="form-control" placeholder="First Name" required
                                onChange={e => this.firstName = e.target.value}
                         />
                         <label>First Name</label>
                     </div>
 
                     <div className="form-floating">
-                        <input className="form-control" placeholder="Last Name"
+                        <input className="form-control" placeholder="Last Name" required
                                onChange={e => this.lastName = e.target.value}
                         />
                         <label>Last Name</label>
                     </div>
 
                     <div className="form-floating">
-                        <input type="email" className="form-control" placeholder="name@example.com"
+                        <input type="email" className="form-control" placeholder="name@example.com" required
                                onChange={e => this.email = e.target.value}
                         />
                         <label>Email address</label>
                     </div>
 
                     <div className="form-floating">
-                        <input type="password" className="form-control" placeholder="Password"
+                        <input type="password" className="form-control" minLength={8} placeholder="Password" required
                                onChange={e => this.password = e.target.value}
                         />
                         <label>Password</label>
                     </div>
 
                     <div className="form-floating">
-                        <input type="password" className="form-control" placeholder="Password Confirm"
+                        <input type="password" className="form-control" minLength={8} placeholder="Password Confirm" required
                                onChange={e => this.passwordConfirm = e.target.value}
                         />
                         <label>Password Confirm</label>

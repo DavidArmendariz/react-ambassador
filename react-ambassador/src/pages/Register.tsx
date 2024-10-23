@@ -1,6 +1,8 @@
 import React, {Component, SyntheticEvent} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
+import app from '../firebase';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 class Register extends Component {
     firstName = '';
@@ -11,6 +13,7 @@ class Register extends Component {
     state = {
         redirect: false
     };
+
 
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -26,6 +29,29 @@ class Register extends Component {
         this.setState({
             redirect: true
         });
+    }
+
+    registerExternal = async () => {
+        const provider = new GoogleAuthProvider();
+        const auth = getAuth(app);
+    
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+    
+            if (user) {
+                await axios.post('/register/extern', {
+                    first_name: user.displayName?.split(' ')[0],
+                    last_name: user.displayName?.split(' ')[1],
+                    email: user.email,
+                    firebase_uid: user.uid,
+                });
+    
+                this.setState({ redirect: true });
+            }
+        } catch (error) {
+            this.setState({ error: 'Error en la autenticación externa. Inténtalo de nuevo.' });
+        }
     }
 
     render() {
@@ -74,6 +100,14 @@ class Register extends Component {
                     </div>
 
                     <button className="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+                    
+                    <button 
+                        type="button" 
+                        className="w-100 btn btn-lg btn-secondary mt-2" 
+                        onClick={this.registerExternal}
+                    >
+                        Register with Google
+                    </button>
                 </form>
             </main>
         );

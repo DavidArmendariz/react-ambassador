@@ -2,6 +2,8 @@ import React, {SyntheticEvent, useState} from 'react';
 import '../Login.css';
 import axios from 'axios';
 import {Redirect} from "react-router-dom";
+import app from '../firebase';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -11,7 +13,7 @@ const Login = () => {
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        await axios.post('login', {
+        await axios.post('/login', {
             email,
             password
         });
@@ -19,9 +21,29 @@ const Login = () => {
         setRedirect(true);
     }
 
+    const loginExternal = async () => {
+        const provider = new GoogleAuthProvider();
+        const auth = getAuth(app);
+
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const idToken = await result.user?.getIdToken();
+            
+            // Enviar el idToken al backend para autenticarlo
+            await axios.post('/loginExternal', {
+                idToken: idToken
+            });
+    
+            setRedirect(true);
+        } catch (error) {
+            console.error('Error logging in with Google:', error);
+        }
+    };
+
     if (redirect) {
         return <Redirect to={'/'}/>;
     }
+    
 
     return (
         <main className="form-signin">
@@ -42,6 +64,9 @@ const Login = () => {
                 </div>
 
                 <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                <button className="w-100 btn btn-lg btn-secondary mt-3" type="button" onClick={loginExternal}>
+                    Sign in with Google
+                </button>
             </form>
         </main>
     );

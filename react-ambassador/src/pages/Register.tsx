@@ -44,7 +44,7 @@ class Register extends Component {
                     first_name: user.displayName?.split(' ')[0],
                     last_name: user.displayName?.split(' ')[1],
                     email: user.email,
-                    idToken: user.uid,
+                    firebase_uid: user.uid,
                 });
     
                 this.setState({ redirect: true });

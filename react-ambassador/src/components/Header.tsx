@@ -19,14 +19,14 @@ const Header = (props: { user: User }) => {
   }, [props.user?.id]);
 
   useEffect(() => {
-    if (revenue !== null) {
+    if (revenue !== null && props.user !== null) {
       setTitle(`$${revenue}`);
       setDescription("You have earned this far");
     } else {
       setTitle("Welcome");
       setDescription("Share links to earn money");
     }
-  }, [revenue]);
+  }, [revenue, props.user]);
 
   let buttons;
 
